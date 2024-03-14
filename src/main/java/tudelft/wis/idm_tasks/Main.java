@@ -18,6 +18,16 @@ public class Main {
             System.out.println(titles.get(i));
         }
 
+        Scanner scanner1 = new Scanner(System.in);
+        String title = scanner1.next();
+        ArrayList<String> jobCategories = new ArrayList<>(imdbJdbcManager.getJobCategoriesFromTitles(title));
+        for(int i = 0; i < 20; i++)
+        {
+            if(i < jobCategories.size()) {
+                System.out.println(jobCategories.get(i));
+            }
+        }
+
 
     }
 }
