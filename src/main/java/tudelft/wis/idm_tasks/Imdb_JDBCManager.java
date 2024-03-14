@@ -29,24 +29,13 @@ public class Imdb_JDBCManager implements JDBCTask2Interface {
         PreparedStatement myStmt = null;
         try {
             myStmt = connection.prepareStatement(query);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
             myStmt.setInt(1, 1999);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        ResultSet myRs = null;
-        try {
+            ResultSet myRs = null;
             myRs = myStmt.executeQuery();
-        } catch (SQLException e) {
+            return (Collection<String>) myRs;
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        return (Collection<String>) myRs;
     }
 
     public Collection<String> getJobCategoriesFromTitles(String searchString)
