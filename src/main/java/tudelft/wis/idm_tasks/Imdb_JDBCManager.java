@@ -3,6 +3,7 @@ package tudelft.wis.idm_tasks;
 import tudelft.wis.idm_tasks.basicJDBC.interfaces.JDBCTask2Interface;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Imdb_JDBCManager implements JDBCTask2Interface {
@@ -12,7 +13,7 @@ public class Imdb_JDBCManager implements JDBCTask2Interface {
     public Connection getConnection()  {
         if (connection == null) {
             try {
-                connection = DriverManager.getConnection("jdbc:postgresql://localhost/imdb?user=root&password=root&ssl=true");
+                connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/imdb");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -25,7 +26,7 @@ public class Imdb_JDBCManager implements JDBCTask2Interface {
     @Override
     public Collection<String> getTitlesPerYear(int year)
     {
-        String query = "SELECT primary_titles FROM titles WHERE start_year = ?";
+        String query = "SELECT primary_title FROM titles WHERE start_year = ?";
         PreparedStatement myStmt = null;
         try {
             getConnection();
@@ -33,7 +34,14 @@ public class Imdb_JDBCManager implements JDBCTask2Interface {
             myStmt.setInt(1, year);
             ResultSet myRs = null;
             myRs = myStmt.executeQuery();
-            return (Collection<String>) myRs;
+
+            Collection<String> titles = new ArrayList<String>();
+            while (myRs.next()) {
+                String title = myRs.getString("primary_title");
+                titles.add(title);
+            }
+
+            return titles;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -46,7 +54,7 @@ public class Imdb_JDBCManager implements JDBCTask2Interface {
 
     public double getAverageRuntimeOfGenre(String genre)
     {
-        return 0;
+        String
     }
 
     public Collection<String> getPlayedCharacters(String actorFullname)

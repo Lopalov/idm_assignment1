@@ -52,9 +52,6 @@ public interface JDBCTask2Interface {
      */
     public Collection<String> getPlayedCharacters(String actorFullname);
         // @TODO: Implement this method. Use parameterized prepared statements for the query!
-    
 
-    
-    
 }
 
