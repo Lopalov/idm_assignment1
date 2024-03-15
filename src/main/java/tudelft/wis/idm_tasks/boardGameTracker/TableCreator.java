@@ -18,8 +18,14 @@ public class TableCreator {
         return connection;
     }
 
+    public void createDatabase() {
+        createPlayer();
+        createBoardGame();
+        createPlayerToBoardGame();
+    }
+
     public void createPlayer() {
-        String setup = "CREATE TABLE IF NOT EXISTS players ( id SERIAL PRIMARY KEY, name VARCHAR(64) NOT NULL, nick_name VARCHAR(64))";
+        String setup = "CREATE TABLE IF NOT EXISTS players ( id SERIAL PRIMARY KEY, name VARCHAR(64) NOT NULL, nick_name VARCHAR(64) NOT NULL)";
         PreparedStatement myStmt = null;
         try {
             getConnection();
