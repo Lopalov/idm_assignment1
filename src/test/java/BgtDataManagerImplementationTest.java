@@ -90,5 +90,4 @@ public class BgtDataManagerImplementationTest extends tudelft.wis.idm_solutions.
         assertEquals(numOfGames, hostFromDB2.getGameCollection().size());
 
     }
-
 }
