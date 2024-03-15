@@ -21,7 +21,7 @@ public class BgtDataManager implements tudelft.wis.idm_tasks.boardGameTracker.in
         }
         return connection;
     }
-    
+
 
     /**
      * Creates a new player and stores it in the DB.
@@ -32,17 +32,27 @@ public class BgtDataManager implements tudelft.wis.idm_tasks.boardGameTracker.in
      * @throws java.sql.SQLException DB trouble
      */
     public Player createNewPlayer(String name, String nickname) throws BgtException {
-        String query = "INSERT INTO PLAYER (name, nick_name), VALUES (?, ?)";
+        String insertQuery = "INSERT INTO players (name, nick_name), VALUES (?, ?)";
         getConnection();
         try {
-            PreparedStatement myStmt = connection.prepareStatement(query);
+            PreparedStatement myStmt = connection.prepareStatement(insertQuery);
             myStmt.setString(1, name);
             myStmt.setString(2, nickname);
-
+            myStmt.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return null;
+        String findIDQuery = "SELECT MAX(id) AS id FROM players";
+        ResultSet resultSet = null;
+        Integer id = null;
+        try {
+            PreparedStatement myStmt = connection.prepareStatement(findIDQuery);
+            resultSet = myStmt.executeQuery();
+            id = resultSet.getInt("id");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return new PlayerInstance(id, name, nickname);
     }
 
     /**

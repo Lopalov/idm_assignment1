@@ -5,8 +5,9 @@ import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
 import java.util.Collection;
 import java.util.LinkedList;
 
-public class Player implements tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player {
+public class PlayerInstance implements tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player {
 
+    private int id;
     private String name;
     private String nickName;
     private Collection<BoardGame> gameCollection = new LinkedList<BoardGame>();
@@ -14,10 +15,12 @@ public class Player implements tudelft.wis.idm_tasks.boardGameTracker.interfaces
     /**
      * Instantiates a new Player POJO.
      *
+     * @param id       id
      * @param name     name
      * @param nickName nickname
      */
-    public Player(String name, String nickName) {
+    public PlayerInstance(int id, String name, String nickName) {
+        this.id = id;
         this.name = name;
         this.nickName = nickName;
     }
