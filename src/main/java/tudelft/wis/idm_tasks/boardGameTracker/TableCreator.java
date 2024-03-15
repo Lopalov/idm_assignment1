@@ -21,7 +21,7 @@ public class TableCreator {
     public void createDatabase() {
         createPlayer();
         createBoardGame();
-        createPlayerToBoardGame();
+        createPlayerOwnsBoardGame();
     }
 
     public void createPlayer() {
@@ -48,7 +48,7 @@ public class TableCreator {
         }
     }
 
-    public void createPlayerToBoardGame() {
+    public void createPlayerOwnsBoardGame() {
         String setup = "CREATE TABLE IF NOT EXISTS playerToBoardGame ( player_id INT NOT NULL, board_game_id INT NOT NULL, "
         + "PRIMARY KEY (player_id, board_game_id), FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE, "
         + "FOREIGN KEY (board_game_id) REFERENCES board_games ON DELETE CASCADE)";
