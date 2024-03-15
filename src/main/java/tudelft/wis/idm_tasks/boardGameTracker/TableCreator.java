@@ -25,7 +25,7 @@ public class TableCreator {
     }
 
     public void createPlayer() {
-        String setup = "CREATE TABLE IF NOT EXISTS players ( id SERIAL PRIMARY KEY, name VARCHAR(64) NOT NULL, nick_name VARCHAR(64) NOT NULL)";
+        String setup = "CREATE TABLE IF NOT EXISTS players (name VARCHAR(64) PRIMARY KEY NOT NULL, nick_name VARCHAR(64) NOT NULL)";
         PreparedStatement myStmt = null;
         try {
             getConnection();
@@ -37,7 +37,7 @@ public class TableCreator {
     }
 
     public void createBoardGame() {
-        String setup = "CREATE TABLE IF NOT EXISTS board_games ( id SERIAL PRIMARY KEY, name VARCHAR(64) NOT NULL, bggURL VARCHAR(64) NOT NULL)";
+        String setup = "CREATE TABLE IF NOT EXISTS board_games (name VARCHAR(64) NOT NULL, bggURL VARCHAR(64) PRIMARY KEY NOT NULL)";
         PreparedStatement myStmt = null;
         try {
             getConnection();
@@ -49,9 +49,9 @@ public class TableCreator {
     }
 
     public void createPlayerOwnsBoardGame() {
-        String setup = "CREATE TABLE IF NOT EXISTS playerToBoardGame ( player_id INT NOT NULL, board_game_id INT NOT NULL, "
-        + "PRIMARY KEY (player_id, board_game_id), FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE, "
-        + "FOREIGN KEY (board_game_id) REFERENCES board_games ON DELETE CASCADE)";
+        String setup = "CREATE TABLE IF NOT EXISTS playerOwnsBoardGame ( player_name VARCHAR(64) NOT NULL, board_game_bggURL VARCHAR(64) NOT NULL, "
+        + "PRIMARY KEY (player_name, board_game_bggURL), FOREIGN KEY (player_name) REFERENCES players(name) ON DELETE CASCADE, "
+        + "FOREIGN KEY (board_game_bggURL) REFERENCES board_games(bggURL) ON DELETE CASCADE)";
         PreparedStatement myStmt = null;
         try {
             getConnection();

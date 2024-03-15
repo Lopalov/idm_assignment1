@@ -1,6 +1,6 @@
 package tudelft.wis.idm_tasks.boardGameTracker;
 
-public class BoardGame implements tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame {
+public class BoardGameImplementation implements tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame {
     /**
      * The Name.
      */
@@ -31,7 +31,7 @@ public class BoardGame implements tudelft.wis.idm_tasks.boardGameTracker.interfa
      * @param name   the name
      * @param bggURL the BoardGameGeek.com URL of the boardgame
      */
-    public BoardGame(String name, String bggURL) {
+    public BoardGameImplementation(String name, String bggURL) {
         this.name = name;
         this.bggURL = bggURL;
     }

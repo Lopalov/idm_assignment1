@@ -5,10 +5,11 @@ import tudelft.wis.idm_tasks.boardGameTracker.interfaces.PlaySession;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-public class BgtDataManager implements tudelft.wis.idm_tasks.boardGameTracker.interfaces.BgtDataManager {
+public class BgtDataManagerImplementation implements tudelft.wis.idm_tasks.boardGameTracker.interfaces.BgtDataManager {
     private static Connection connection;
 
     public Connection getConnection()  {
@@ -42,17 +43,7 @@ public class BgtDataManager implements tudelft.wis.idm_tasks.boardGameTracker.in
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        String findIDQuery = "SELECT MAX(id) AS id FROM players";
-        ResultSet resultSet = null;
-        Integer id = null;
-        try {
-            PreparedStatement myStmt = connection.prepareStatement(findIDQuery);
-            resultSet = myStmt.executeQuery();
-            id = resultSet.getInt("id");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return new PlayerInstance(id, name, nickname);
+        return new PlayerImplementation(name, nickname);
     }
 
     /**
@@ -63,7 +54,21 @@ public class BgtDataManager implements tudelft.wis.idm_tasks.boardGameTracker.in
      * @throws BgtException the bgt exception
      */
     public Collection<Player> findPlayersByName(String name) throws BgtException {
-        return null;
+        String findIDQuery = "SELECT name, nickname FROM players WHERE name LIKE CONCAT(%, ?, %)";
+        ResultSet resultSet = null;
+        try {
+            PreparedStatement myStmt = connection.prepareStatement(findIDQuery);
+            myStmt.setString(1, name);
+            resultSet = myStmt.executeQuery();
+            Collection<Player> players = new ArrayList<>();
+            while(resultSet.next()) {
+                String nickname = resultSet.getString("nickname");
+                players.add(new PlayerImplementation(name, nickname));
+            }
+            return players;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -126,7 +131,15 @@ public class BgtDataManager implements tudelft.wis.idm_tasks.boardGameTracker.in
      * @param player the player
      */
     public void persistPlayer(Player player) {
-
+        String query = "UPSERT INTO player (name, nickname) VALUES (?, ?)";
+        try {
+            PreparedStatement myStmt = connection.prepareStatement(query);
+            myStmt.setString(1, player.getPlayerName());
+            myStmt.setString(2, player.getPlayerNickName());
+            myStmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
